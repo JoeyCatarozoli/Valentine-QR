@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dinner Menus</title>
+  <title>Sundays Dinner Menus</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
@@ -11,31 +11,35 @@
     body{
       margin:0; font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
       background: radial-gradient(circle at 20% 10%, #3b0025 0%, var(--pink) 45%, #0f0008 100%);
-      color:var(--text); padding:16px; overflow-x:hidden;
+      color:var(--text); padding:24px; overflow-x:hidden;
     }
-    h1{ text-align:center; margin:12px 0 20px; letter-spacing:.4px; }
-    .tabs{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:12px; position:relative; z-index:1; }
+    h1{ text-align:center; margin:8px 0 20px; letter-spacing:.6px; font-size:clamp(28px, 3vw, 40px); }
+    .tabs{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:18px; position:relative; z-index:2; }
     .tabs button{
-      padding:10px 14px; border-radius:12px; border:1px solid #3b0025; cursor:pointer;
-      background:#1a0010; color:#fff;
+      padding:12px 18px; border-radius:14px; border:1px solid #3b0025; cursor:pointer;
+      background:#1a0010; color:#fff; font-size:16px;
     }
     .tabs button.active{
       background:linear-gradient(135deg, #ff4da6, #ff8ac2);
-      border-color:#ffb3da; color:#14000b; box-shadow:0 0 18px rgba(255,209,102,.35);
+      border-color:#ffb3da; color:#14000b; box-shadow:0 0 22px rgba(255,209,102,.35);
     }
     .menu{
-      display:none; max-width:900px; margin:0 auto; background:rgba(22,0,13,.9);
-      border-radius:16px; padding:16px; border:1px solid rgba(255,209,102,.25);
-      box-shadow:0 10px 30px rgba(0,0,0,.4); backdrop-filter: blur(4px); position:relative; z-index:1;
+      display:none; max-width:1200px; margin:0 auto; background:rgba(22,0,13,.92);
+      border-radius:18px; padding:22px 26px; border:1px solid rgba(255,209,102,.25);
+      box-shadow:0 12px 40px rgba(0,0,0,.45); backdrop-filter: blur(6px); position:relative; z-index:2;
+      columns: 2; column-gap: 28px;
     }
     .menu.active{ display:block; }
-    .section{ margin:14px 0; }
-    .section h3{ margin:8px 0; padding-bottom:6px; border-bottom:1px solid rgba(255,209,102,.35); color:#ffe7b0; }
+    .section{ break-inside: avoid; margin:14px 0 18px; }
+    .section h3{
+      margin:8px 0 10px; padding-bottom:6px;
+      border-bottom:1px solid rgba(255,209,102,.35); color:#ffe7b0;
+    }
     ul{ list-style:none; padding:0; margin:0; }
-    li{ padding:8px 0; border-bottom:1px dashed rgba(255,209,102,.25); }
-    footer{ text-align:center; opacity:.7; margin-top:16px; font-size:12px; position:relative; z-index:1; }
+    li{ padding:6px 0; border-bottom:1px dashed rgba(255,209,102,.25); line-height:1.35; }
+    footer{ text-align:center; opacity:.75; margin:18px 0 8px; font-size:13px; position:relative; z-index:2; }
+    @media (max-width: 900px){ .menu{ columns:1; padding:16px; } }
 
-    /* Animated sparkles */
     .sparkle-layer{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
     .sparkle{
       position:absolute; width:4px; height:4px; border-radius:50%;
@@ -44,10 +48,9 @@
       animation: floatSparkle linear infinite, twinkle 1.5s ease-in-out infinite alternate;
       opacity:.9;
     }
-    @keyframes floatSparkle { from { transform: translateY(110vh) translateX(0); } to { transform: translateY(-10vh) translateX(20px); } }
-    @keyframes twinkle { from{ transform: scale(.6); } to{ transform: scale(1.2); } }
+    @keyframes floatSparkle { from { transform: translateY(110vh) translateX(0); } to { transform: translateY(-10vh) translateX(30px); } }
+    @keyframes twinkle { from{ transform: scale(.6); } to{ transform: scale(1.25); } }
 
-    /* Floating hearts */
     .heart-layer{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
     .heart{
       position:absolute; font-size:20px; opacity:.9;
@@ -57,23 +60,22 @@
     @keyframes floatHeart {
       from { transform: translateY(110vh) translateX(0) rotate(0deg); opacity:0; }
       10% { opacity:1; }
-      to   { transform: translateY(-10vh) translateX(30px) rotate(20deg); opacity:0; }
+      to   { transform: translateY(-10vh) translateX(40px) rotate(25deg); opacity:0; }
     }
 
-    /* Splash */
     #splash{
       position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
       background: radial-gradient(circle at 50% 40%, #ff7fbf 0%, #2a001a 45%, #0f0008 100%);
-      z-index:9999; animation: fadeOut 1s ease forwards; animation-delay:4s;
+      z-index:9999; animation: fadeOut 1s ease forwards; animation-delay:5s;
     }
     #splash .card{
-      text-align:center; padding:24px 28px; border-radius:20px;
-      background: rgba(22,0,13,.9); border:1px solid rgba(255,209,102,.6);
-      box-shadow:0 0 30px rgba(255,209,102,.45);
+      text-align:center; padding:28px 34px; border-radius:22px;
+      background: rgba(22,0,13,.92); border:1px solid rgba(255,209,102,.6);
+      box-shadow:0 0 36px rgba(255,209,102,.45);
     }
-    #splash h2{ margin:0 0 10px; font-size:26px; color:#ffe7b0; text-transform:lowercase; }
-    .hearts{ font-size:24px; letter-spacing:4px; }
-    .skip{ margin-top:10px; padding:8px 12px; border-radius:10px; border:1px solid #ffb3da; background:#ff4da6; color:#14000b; cursor:pointer; }
+    #splash h2{ margin:0 0 12px; font-size:28px; color:#ffe7b0; text-transform:lowercase; }
+    .hearts{ font-size:26px; letter-spacing:6px; }
+    .skip{ margin-top:12px; padding:10px 14px; border-radius:12px; border:1px solid #ffb3da; background:#ff4da6; color:#14000b; cursor:pointer; }
     @keyframes fadeOut { to{ opacity:0; pointer-events:none } }
   </style>
 </head>
@@ -90,97 +92,135 @@
 <div class="sparkle-layer" id="sparkles"></div>
 <div class="heart-layer" id="hearts"></div>
 
-<h1>Tonight’s Dinner Menus 🍽️</h1>
+<h1>Sundays Dinner Menus</h1>
 
 <div class="tabs">
-  <button class="active" onclick="showMenu('pricci')">Pricci Atlanta</button>
-  <button onclick="showMenu('blueridge')">Blue Ridge Grill</button>
-  <button onclick="showMenu('ssamjang')">SsamJang BBQ</button>
-  <button onclick="showMenu('enso')">Enso Izakaya</button>
+  <button class="active" data-target="pricci" onclick="showMenu('pricci')">Pricci Atlanta</button>
+  <button data-target="blueridge" onclick="showMenu('blueridge')">Blue Ridge Grill</button>
+  <button data-target="ssamjang" onclick="showMenu('ssamjang')">SsamJang BBQ</button>
+  <button data-target="enso" onclick="showMenu('enso')">Enso Izakaya</button>
 </div>
 
+<!-- PRICCI FULL -->
 <div id="pricci" class="menu active">
-  <div class="section"><h3>Appetizers & Salads</h3>
-    <ul>
-      <li>Creamy Georgia Goat Cheese in Warm Marinara</li>
-      <li>Calamari & Sicilian Eggplant Chips</li>
-      <li>Eggplant alla Parmigiana</li>
-      <li>Polpo (grilled octopus)</li>
-      <li>Yellowtail Crudo*</li>
-    </ul>
-  </div>
-  <div class="section"><h3>Artisanal Pasta & Risotto</h3>
-    <ul>
-      <li>Cacio e Pepe</li>
-      <li>Ravioli di Brasato</li>
-      <li>Linguini Frutti di Mare</li>
-      <li>Lasagna Espressa</li>
-      <li>Risotto ai Funghi</li>
-    </ul>
-  </div>
-  <div class="section"><h3>Entrées & Wood-Fired Pizza</h3>
-    <ul>
-      <li>Branzino • Dover Sole • Cioppino</li>
-      <li>Veal Chop Parmigiana or Milanese • Ossobuco</li>
-      <li>Regina Margherita • Prosciutto e Mozza • Sausage & Soppressata</li>
-    </ul>
-  </div>
+  <div class="section"><h3>Appetizers</h3><ul>
+    <li>Creamy Georgia Goat Cheese in Warm Marinara</li>
+    <li>Calamari & Sicilian Eggplant Chips</li>
+    <li>Eggplant alla Parmigiana</li>
+    <li>Polpettine</li>
+    <li>Cozze</li>
+    <li>Polpo</li>
+    <li>Yellowtail Crudo*</li>
+    <li>Prosciutto di Parma</li>
+    <li>Carpaccio*</li>
+  </ul></div>
+  <div class="section"><h3>Salads & Burrata</h3><ul>
+    <li>Misticanza</li><li>Caesar</li><li>Arugula</li><li>Whole Burrata Pugliese</li>
+  </ul></div>
+  <div class="section"><h3>Artisanal Pasta</h3><ul>
+    <li>Orecchiette</li><li>Cacio e Pepe</li><li>Ravioli di Brasato</li><li>Linguini Frutti di Mare</li>
+    <li>Lasagna Espressa</li><li>Tortelli</li><li>Mezze Maniche Norma</li><li>Mediterranean Shrimp Rigatoni</li>
+    <li>Spaghettini Pomodoro</li><li>Fresh Truffle Fettuccine</li>
+  </ul></div>
+  <div class="section"><h3>Risotto</h3><ul>
+    <li>Risotto ai Funghi</li><li>Risotto Scallops e Zucca*</li>
+  </ul></div>
+  <div class="section"><h3>Entrées</h3><ul>
+    <li>Branzino</li><li>Dover Sole</li><li>Cioppino</li><li>Salmon e Carciofi*</li>
+    <li>Chilean Sea Bass Livornese</li><li>Veal Scaloppini Piccata</li><li>Veal Chop Parmigiana or Milanese</li>
+    <li>Pollo alla Parmigiana</li><li>Ossobuco alla Milanese con Risotto</li>
+    <li>Filet Mignon</li><li>USDA Prime New York Strip</li><li>The Veal Chop</li><li>Italian Meats & Cheese Board</li>
+  </ul></div>
+  <div class="section"><h3>Pizza</h3><ul>
+    <li>Regina Margherita</li><li>Prosciutto e Mozza</li><li>Sausage & Soppressata</li><li>Mushroom – Cipollini – Fontina</li>
+  </ul></div>
+  <div class="section"><h3>Sides</h3><ul>
+    <li>Gourmet Fries</li><li>Sautéed Baby Spinach</li><li>Grilled Asparagus</li><li>Broccolini</li><li>Patate al Forno</li><li>Carciofi Fritti</li>
+  </ul></div>
 </div>
 
+<!-- BLUE RIDGE FULL -->
 <div id="blueridge" class="menu">
-  <div class="section"><h3>Starters / Salads</h3><ul><li>Blue Ridge Grill Salad</li><li>Iceberg Wedge</li></ul></div>
-  <div class="section"><h3>Entrées</h3><ul><li>Filet • Ribeye • NY Strip</li><li>Chilean Sea Bass • Diver Scallops</li></ul></div>
-  <div class="section"><h3>Casual</h3><ul><li>American Wagyu Burger</li><li>Fried Lobster BLT</li></ul></div>
+  <div class="section"><h3>Starters & Salads</h3><ul>
+    <li>Blue Ridge Grill Salad</li><li>Iceberg Wedge</li>
+  </ul></div>
+  <div class="section"><h3>Steaks & Seafood</h3><ul>
+    <li>Filet Mignon</li><li>Prime Bone-In Ribeye</li><li>New York Strip (Prime)</li><li>Japanese Wagyu A5 Strip</li>
+    <li>Seared Diver Scallops</li><li>Lemon Pepper Redfish</li><li>Chilean Sea Bass</li><li>Grilled Atlantic Salmon</li>
+    <li>Grilled Georgia Trout</li><li>Braised Beef Short Rib</li><li>Grilled Berkshire Pork Chop</li>
+  </ul></div>
+  <div class="section"><h3>Sandwiches & Plates</h3><ul>
+    <li>American Wagyu Burger</li><li>Fried Lobster BLT</li><li>Lemon Chicken</li><li>Ratatouille</li>
+  </ul></div>
 </div>
 
+<!-- SSAMJANG FULL -->
 <div id="ssamjang" class="menu">
-  <div class="section"><h3>BBQ Sets / Meats</h3><ul><li>Combo Platters</li><li>Bulgogi • Spicy Pork • LA Galbi</li></ul></div>
-  <div class="section"><h3>Sides & Drinks</h3><ul><li>Kimchi • Japchae • Steamed Egg • Rice</li><li>Soju • Beer • Korean Soft Drinks</li></ul></div>
+  <div class="section"><h3>Korean BBQ Sets</h3><ul>
+    <li>BBQ Combo Platters</li><li>Premium Beef Combo</li><li>Pork Belly Combo</li>
+  </ul></div>
+  <div class="section"><h3>A La Carte Meats</h3><ul>
+    <li>Bulgogi</li><li>Spicy Pork</li><li>LA Galbi</li><li>Brisket</li><li>Pork Belly</li><li>Short Ribs</li>
+  </ul></div>
+  <div class="section"><h3>Sides</h3><ul>
+    <li>Kimchi</li><li>Japchae</li><li>Steamed Egg</li><li>Pickled Radish</li><li>Rice</li>
+  </ul></div>
+  <div class="section"><h3>Drinks</h3><ul>
+    <li>Soju</li><li>Korean Beer</li><li>Korean Soft Drinks</li>
+  </ul></div>
 </div>
 
+<!-- ENSO FULL -->
 <div id="enso" class="menu">
-  <div class="section"><h3>Chef’s Choice</h3><ul><li>Chef’s Choice Set</li></ul></div>
-  <div class="section"><h3>Yakitori / Skewers</h3><ul><li>Negima • Tsukune • Tebasaki • Beef Kushiyaki</li></ul></div>
-  <div class="section"><h3>Share Plates</h3><ul><li>Takoyaki • Karaage • Kombu Mussels • Nori Fries</li></ul></div>
-  <div class="section"><h3>Noodles & Rice</h3><ul><li>Tonkotsu Ramen • Chicken Paitan • Enso Chahan • Unagi Don</li></ul></div>
+  <div class="section"><h3>Yakitori / Kushiyaki</h3><ul>
+    <li>Tebasaki</li><li>Negima</li><li>Tenda</li><li>Mune-Niku</li><li>Pork Jowl</li><li>Pork Ribs</li>
+    <li>Beef Kushiyaki</li><li>Tsukune</li><li>Hamachi Kama</li><li>Baby Lamb Chop</li><li>Short Ribs</li><li>Bronzino</li>
+    <li>Mushroom • Broccoli • Corn • Pineapple</li>
+  </ul></div>
+  <div class="section"><h3>Share Plates</h3><ul>
+    <li>Edamame</li><li>Wakame Salad</li><li>Arugula MixGreen Salad</li><li>Savory Cucumber</li><li>Shrimp & Vegetable Tempura</li>
+    <li>Fresh Oyster*</li><li>Takoyaki</li><li>Tuna Avo Zuki*</li><li>Golden Hamachi Over Green*</li>
+    <li>Karaage</li><li>Shrimp Pops</li><li>Kombu Mussels</li><li>Agedashi Tofu</li><li>Nori Fries</li><li>Shishito Peppers</li>
+  </ul></div>
+  <div class="section"><h3>Noodles & Rice</h3><ul>
+    <li>Mentaiko Pasta</li><li>Tonkotsu Ramen</li><li>Chicken Paitan Ramen</li><li>Enso Chahan</li><li>Tempura Don</li>
+    <li>Curry Rice</li><li>Unagi Don</li><li>Yaki Udon</li><li>Corn Tsukemen</li><li>Nabeyaki Udon</li>
+  </ul></div>
 </div>
 
-<footer>Mobile-optimized menu preview • Prices intentionally hidden</footer>
+<footer>Prices removed • Full menus displayed for Sunday planning</footer>
 
 <script>
   function showMenu(id){
-    document.querySelectorAll('.menu').forEach(m=>m.classList.remove('active'));
-    document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.menu').forEach(m => m.classList.remove('active'));
+    document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    [...document.querySelectorAll('.tabs button')]
-      .find(b => b.textContent.toLowerCase().includes(id.replace('-', '')))
-      ?.classList.add('active');
+    const btn = document.querySelector(`.tabs button[data-target="${id}"]`);
+    if (btn) btn.classList.add('active');
   }
 
-  // Sparkles
   const sparkleLayer = document.getElementById('sparkles');
-  for(let i=0;i<80;i++){
+  for(let i=0;i<100;i++){
     const s = document.createElement('div');
     s.className = 'sparkle';
     const size = Math.random()*3+2;
     s.style.width = size+'px';
     s.style.height = size+'px';
     s.style.left = Math.random()*100+'vw';
-    s.style.animationDuration = (5+Math.random()*7)+'s';
+    s.style.animationDuration = (5+Math.random()*8)+'s';
     s.style.animationDelay = (-Math.random()*10)+'s';
     sparkleLayer.appendChild(s);
   }
 
-  // Hearts
   const heartLayer = document.getElementById('hearts');
   const heartEmojis = ['💛','💖','💫'];
-  for(let i=0;i<28;i++){
+  for(let i=0;i<32;i++){
     const h = document.createElement('div');
     h.className = 'heart';
     h.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
     h.style.left = Math.random()*100+'vw';
-    h.style.fontSize = (14+Math.random()*20)+'px';
-    h.style.animationDuration = (7+Math.random()*9)+'s';
+    h.style.fontSize = (14+Math.random()*22)+'px';
+    h.style.animationDuration = (7+Math.random()*10)+'s';
     h.style.animationDelay = (-Math.random()*12)+'s';
     heartLayer.appendChild(h);
   }
